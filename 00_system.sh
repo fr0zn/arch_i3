@@ -108,27 +108,6 @@ nameserver 8.8.4.4
 # Google IPv6 nameservers
 nameserver 2001:4860:4860::8888
 nameserver 2001:4860:4860::8844
-
-# Comodo nameservers
-nameserver 8.26.56.26
-nameserver 8.20.247.20
-
-# Basic Yandex.DNS - Quick and reliable DNS
-nameserver 77.88.8.8
-nameserver 77.88.8.1
-# Safe Yandex.DNS - Protection from virus and fraudulent content
-nameserver 77.88.8.88
-nameserver 77.88.8.2
-# Family Yandex.DNS - Without adult content
-nameserver 77.88.8.7
-nameserver 77.88.8.3
-
-# censurfridns.dk IPv4 nameservers
-nameserver 91.239.100.100
-nameserver 89.233.43.71
-# censurfridns.dk IPv6 nameservers
-nameserver 2001:67c:28a4::
-nameserver 2002:d596:2a92:1:71:53::
 EOF
 }
 #}}}
@@ -199,6 +178,15 @@ create_partition_scheme(){
 #}}}
 #SETUP PARTITION{{{
 create_partition(){
+  # partitions based on boot system
+  if [[ $UEFI -eq 1 ]]; then
+    local partitions="root, EFI, swap"
+  else
+    local partitions="root, swap"
+  fi
+
+  print_info "Create atleast the following partitions: $partitions"
+
   apps_list=("cfdisk" "cgdisk" "fdisk" "gdisk" "parted");
   PS3="$prompt1"
   echo -e "Select partition program:"
@@ -855,8 +843,7 @@ root_password(){
 #FINISH {{{
 finish(){
   print_title "INSTALL COMPLETED"
-  #COPY AUI TO ROOT FOLDER IN THE NEW SYSTEM
-  print_warning "\nA copy of the AUI will be placed in /root directory of your new system"
+  print_warning "\nA copy will be placed in /root directory of the new system"
   cp -R `pwd` ${MOUNTPOINT}/root
   read_input_text "Reboot system"
   if [[ $OPTION == y ]]; then
