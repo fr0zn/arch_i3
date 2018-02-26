@@ -857,6 +857,8 @@ finish(){
 print_title "https://wiki.archlinux.org/index.php/Installation_guide"
 print_info "The Arch Install Scripts are a set of Bash scripts that simplify Arch installation."
 pause_function
+configure_mirrorlist
+checklist[3]=1
 check_boot_system
 check_connection
 check_trim
