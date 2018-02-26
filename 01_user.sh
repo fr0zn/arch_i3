@@ -20,8 +20,6 @@ welcome(){
   print_line
   echo "Script can be cancelled at any time with CTRL+C"
   print_line
-  echo -e "\nBackups:"
-  print_line
   pause_function
   echo ""
 }
